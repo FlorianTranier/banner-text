@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Generator Test Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .preset-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            background: #e9ecef;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .preset-btn:hover {
+            background: #dee2e6;
+        }
+
+        .banner-display {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+        }
+
+        .banner-display h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .banner-result {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .banner-result img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .banner-result pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .banner-result iframe {
+            width: 100%;
+            border: none;
+            min-height: 200px;
+            border-radius: 6px;
+        }
+
+        .url-display {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            font-size: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Layout Styles */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .layout-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .layout-side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .layout-single {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Wrapper Styles */
+        .wrapper-bordered {
+            border: 3px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .wrapper-shadowed {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .wrapper-rounded {
+            border-radius: 20px;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .wrapper-bg-light {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .wrapper-bg-dark {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .layout-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .layout-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .layout-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .wrapper-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .wrapper-btn {
+            padding: 8px 16px;
+            border: 2px solid #6c757d;
+            background: white;
+            color: #6c757d;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .wrapper-btn.active {
+            background: #6c757d;
+            color: white;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .layout-side-by-side {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Banner Generator Test Page</h1>
+            <p>Test all banner generation options with query params, POST body, different layouts, and wrapper styles</p>
+        </header>
+
+        <div class="content">
+            <!-- Banner Configuration Form -->
+            <div class="section">
+                <h2>Banner Configuration</h2>
+                <form id="bannerForm">
+                    <div class="form-group">
+                        <label for="bannerType">Banner Type *</label>
+                        <select id="bannerType" required>
+                            <option value="image">Image</option>
+                            <option value="html">HTML</option>
+                            <option value="text">Text</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text">Text *</label>
+                        <input type="text" id="text" placeholder="Enter banner text" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="color">Text Color</label>
+                            <input type="color" id="color" value="#000000">
+                        </div>
+                        <div class="form-group">
+                            <label for="backgroundColor">Background Color</label>
+                            <input type="color" id="backgroundColor" value="#ffffff">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fontSize">Font Size</label>
+                            <input type="number" id="fontSize" placeholder="30" min="10" max="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="fontFamily">Font Family</label>
+                            <select id="fontFamily">
+                                <option value="">Arial (default)</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Comic Sans MS">Comic Sans MS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="width">Width</label>
+                            <input type="number" id="width" placeholder="1000" min="100" max="5000">
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height</label>
+                            <input type="number" id="height" placeholder="100" min="50" max="2000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="textAlign">Text Align</label>
+                            <select id="textAlign">
+                                <option value="">center (default)</option>
+                                <option value="left">Left</option>
+                                <option value="center">Center</option>
+                                <option value="right">Right</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="textVerticalAlign">Vertical Align</label>
+                            <select id="textVerticalAlign">
+                                <option value="">center (default)</option>
+                                <option value="top">Top</option>
+                                <option value="center">Center</option>
+                                <option value="bottom">Bottom</option>
+                            </select>
+                    </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-primary" onclick="generateWithGET()">Generate with GET (Query Params)</button>
+                        <button type="button" class="btn-primary" onclick="generateWithPOST()">Generate with POST (Body)</button>
+                        <button type="button" class="btn-secondary" onclick="clearResults()">Clear Results</button>
+                    </div>
+                </form>
+
+                <div class="preset-buttons">
+                    <strong>Quick Presets:</strong>
+                    <button class="preset-btn" onclick="loadPreset('default')">Default</button>
+                    <button class="preset-btn" onclick="loadPreset('large')">Large Banner</button>
+                    <button class="preset-btn" onclick="loadPreset('colorful')">Colorful</button>
+                    <button class="preset-btn" onclick="loadPreset('dark')">Dark Theme</button>
+                    <button class="preset-btn" onclick="loadPreset('small')">Small</button>
+                </div>
+            </div>
+
+            <!-- Display Layout Selector -->
+            <div class="section">
+                <h2>Display Layout</h2>
+                <div class="layout-selector">
+                    <button class="layout-btn active" onclick="setLayout('grid')">Grid</button>
+                    <button class="layout-btn" onclick="setLayout('list')">List</button>
+                    <button class="layout-btn" onclick="setLayout('side-by-side')">Side-by-Side</button>
+                    <button class="layout-btn" onclick="setLayout('single')">Single</button>
+                </div>
+            </div>
+
+            <!-- Wrapper Style Selector -->
+            <div class="section">
+                <h2>Wrapper Style</h2>
+                <div class="wrapper-selector">
+                    <button class="wrapper-btn" onclick="setWrapper('none')">None</button>
+                    <button class="wrapper-btn" onclick="setWrapper('bordered')">Bordered</button>
+                    <button class="wrapper-btn" onclick="setWrapper('shadowed')">Shadowed</button>
+                    <button class="wrapper-btn" onclick="setWrapper('rounded')">Rounded</button>
+                    <button class="wrapper-btn" onclick="setWrapper('bg-light')">Light BG</button>
+                    <button class="wrapper-btn" onclick="setWrapper('bg-dark')">Dark BG</button>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div class="section">
+                <h2>Generated Banners</h2>
+                <div id="resultsContainer"></div>
+            </div>
+
+            <!-- Examples Section -->
+            <div class="section">
+                <h2>Example URLs</h2>
+                <div id="exampleUrls"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLayout = 'grid';
+        let currentWrapper = 'none';
+        let generatedBanners = [];
+
+        // Get base URL
+        function getBaseUrl() {
+            return window.location.origin;
+        }
+
+        // Build query string from form data
+        function buildQueryString() {
+            const params = new URLSearchParams();
+            const text = document.getElementById('text').value;
+            if (!text) {
+                alert('Text is required!');
+                return null;
+            }
+            params.append('text', text);
+
+            const color = document.getElementById('color').value;
+            if (color && color !== '#000000') params.append('color', color);
+
+            const backgroundColor = document.getElementById('backgroundColor').value;
+            if (backgroundColor && backgroundColor !== '#ffffff') params.append('backgroundColor', backgroundColor);
+
+            const fontSize = document.getElementById('fontSize').value;
+            if (fontSize) params.append('fontSize', fontSize);
+
+            const fontFamily = document.getElementById('fontFamily').value;
+            if (fontFamily) params.append('fontFamily', fontFamily);
+
+            const width = document.getElementById('width').value;
+            if (width) params.append('width', width);
+
+            const height = document.getElementById('height').value;
+            if (height) params.append('height', height);
+
+            const textAlign = document.getElementById('textAlign').value;
+            if (textAlign) params.append('textAlign', textAlign);
+
+            const textVerticalAlign = document.getElementById('textVerticalAlign').value;
+            if (textVerticalAlign) params.append('textVerticalAlign', textVerticalAlign);
+
+            return params.toString();
+        }
+
+        // Get form data as object
+        function getFormData() {
+            const data = {
+                text: document.getElementById('text').value
+            };
+
+            const color = document.getElementById('color').value;
+            if (color && color !== '#000000') data.color = color;
+
+            const backgroundColor = document.getElementById('backgroundColor').value;
+            if (backgroundColor && backgroundColor !== '#ffffff') data.backgroundColor = backgroundColor;
+
+            const fontSize = document.getElementById('fontSize').value;
+            if (fontSize) data.fontSize = parseInt(fontSize);
+
+            const fontFamily = document.getElementById('fontFamily').value;
+            if (fontFamily) data.fontFamily = fontFamily;
+
+            const width = document.getElementById('width').value;
+            if (width) data.width = parseInt(width);
+
+            const height = document.getElementById('height').value;
+            if (height) data.height = parseInt(height);
+
+            const textAlign = document.getElementById('textAlign').value;
+            if (textAlign) data.textAlign = textAlign;
+
+            const textVerticalAlign = document.getElementById('textVerticalAlign').value;
+            if (textVerticalAlign) data.textVerticalAlign = textVerticalAlign;
+
+            return data;
+        }
+
+        // Generate banner with GET request
+        async function generateWithGET() {
+            const queryString = buildQueryString();
+            if (!queryString) return;
+
+            const type = document.getElementById('bannerType').value;
+            const url = `${getBaseUrl()}/banners/${type}?${queryString}`;
+
+            await fetchBanner(url, 'GET', null, queryString);
+        }
+
+        // Generate banner with POST request
+        async function generateWithPOST() {
+            const text = document.getElementById('text').value;
+            if (!text) {
+                alert('Text is required!');
+                return;
+            }
+
+            const type = document.getElementById('bannerType').value;
+            const url = `${getBaseUrl()}/banners/${type}`;
+            const data = getFormData();
+
+            await fetchBanner(url, 'POST', data, null);
+        }
+
+        // Fetch banner from API
+        async function fetchBanner(url, method, body, queryString) {
+            const type = document.getElementById('bannerType').value;
+            const displayUrl = queryString ? `${url.split('?')[0]}?${queryString}` : url;
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {}
+                };
+
+                if (method === 'POST' && body) {
+                    options.headers['Content-Type'] = 'application/json';
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(url, options);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                let result;
+                if (type === 'image') {
+                    const blob = await response.blob();
+                    result = URL.createObjectURL(blob);
+                } else if (type === 'html') {
+                    result = await response.text();
+                } else {
+                    result = await response.text();
+                }
+
+                const bannerData = {
+                    type: type,
+                    url: displayUrl,
+                    method: method,
+                    result: result,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+
+                generatedBanners.push(bannerData);
+                displayBanners();
+                updateExampleUrls();
+            } catch (error) {
+                showError(`Error generating banner: ${error.message}`);
+            }
+        }
+
+        // Display all generated banners
+        function displayBanners() {
+            const container = document.getElementById('resultsContainer');
+            if (generatedBanners.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">No banners generated yet. Use the form above to create banners.</p>';
+                return;
+            }
+
+            let html = '';
+            const layoutClass = `layout-${currentLayout}`;
+            html += `<div class="${layoutClass}">`;
+
+            generatedBanners.forEach((banner, index) => {
+                const wrapperClass = currentWrapper !== 'none' ? `wrapper-${currentWrapper}` : '';
+                html += `<div class="banner-result ${wrapperClass}">`;
+                html += `<div style="margin-bottom: 10px; font-size: 12px; color: #666;">`;
+                html += `<strong>${banner.type.toUpperCase()}</strong> | ${banner.method} | ${banner.timestamp}`;
+                html += `</div>`;
+
+                if (banner.type === 'image') {
+                    html += `<img src="${banner.result}" alt="Generated banner">`;
+                } else if (banner.type === 'html') {
+                    html += `<div style="border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">`;
+                    html += banner.result;
+                    html += `</div>`;
+                } else {
+                    html += `<pre>${escapeHtml(banner.result)}</pre>`;
+                }
+
+                html += `<div class="url-display">`;
+                html += `<span>${escapeHtml(banner.url)}</span>`;
+                html += `<button class="copy-btn" onclick="copyToClipboard('${escapeHtml(banner.url)}')">Copy URL</button>`;
+                html += `</div>`;
+
+                html += `</div>`;
+            });
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Set layout
+        function setLayout(layout) {
+            currentLayout = layout;
+            document.querySelectorAll('.layout-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            displayBanners();
+        }
+
+        // Set wrapper style
+        function setWrapper(wrapper) {
+            currentWrapper = wrapper;
+            document.querySelectorAll('.wrapper-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (event.target) {
+                event.target.classList.add('active');
+            }
+            displayBanners();
+        }
+
+        // Clear results
+        function clearResults() {
+            generatedBanners = [];
+            displayBanners();
+            document.getElementById('exampleUrls').innerHTML = '';
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccess('URL copied to clipboard!');
+            }).catch(err => {
+                showError('Failed to copy URL');
+            });
+        }
+
+        // Show error message
+        function showError(message) {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = `<div class="error-message">${escapeHtml(message)}</div>`;
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const container = document.getElementById('resultsContainer');
+            const existing = container.innerHTML;
+            container.innerHTML = `<div class="success-message">${escapeHtml(message)}</div>` + existing;
+            setTimeout(() => {
+                const msg = container.querySelector('.success-message');
+                if (msg) msg.remove();
+            }, 3000);
+        }
+
+        // Load preset
+        function loadPreset(presetName) {
+            const presets = {
+                default: {
+                    text: 'Hello World',
+                    color: '#000000',
+                    backgroundColor: '#ffffff',
+                    fontSize: '30',
+                    fontFamily: '',
+                    width: '1000',
+                    height: '100',
+                    textAlign: '',
+                    textVerticalAlign: ''
+                },
+                large: {
+                    text: 'Large Banner',
+                    color: '#333333',
+                    backgroundColor: '#f0f0f0',
+                    fontSize: '60',
+                    fontFamily: 'Arial',
+                    width: '2000',
+                    height: '300',
+                    textAlign: 'center',
+                    textVerticalAlign: 'center'
+                },
+                colorful: {
+                    text: 'Colorful Banner',
+                    color: '#ffffff',
+                    backgroundColor: '#667eea',
+                    fontSize: '40',
+                    fontFamily: 'Helvetica',
+                    width: '1200',
+                    height: '150',
+                    textAlign: 'center',
+                    textVerticalAlign: 'center'
+                },
+                dark: {
+                    text: 'Dark Theme',
+                    color: '#ffffff',
+                    backgroundColor: '#2d2d2d',
+                    fontSize: '35',
+                    fontFamily: 'Verdana',
+                    width: '1000',
+                    height: '120',
+                    textAlign: 'center',
+                    textVerticalAlign: 'center'
+                },
+                small: {
+                    text: 'Small',
+                    color: '#000000',
+                    backgroundColor: '#ffffff',
+                    fontSize: '20',
+                    fontFamily: '',
+                    width: '400',
+                    height: '60',
+                    textAlign: 'center',
+                    textVerticalAlign: 'center'
+                }
+            };
+
+            const preset = presets[presetName];
+            if (!preset) return;
+
+            document.getElementById('text').value = preset.text;
+            document.getElementById('color').value = preset.color;
+            document.getElementById('backgroundColor').value = preset.backgroundColor;
+            document.getElementById('fontSize').value = preset.fontSize;
+            document.getElementById('fontFamily').value = preset.fontFamily;
+            document.getElementById('width').value = preset.width;
+            document.getElementById('height').value = preset.height;
+            document.getElementById('textAlign').value = preset.textAlign;
+            document.getElementById('textVerticalAlign').value = preset.textVerticalAlign;
+        }
+
+        // Update example URLs
+        function updateExampleUrls() {
+            const container = document.getElementById('exampleUrls');
+            if (generatedBanners.length === 0) {
+                container.innerHTML = '<p style="color: #999;">Generate some banners to see example URLs here.</p>';
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 15px;">';
+            generatedBanners.forEach((banner, index) => {
+                html += `<div class="url-display">`;
+                html += `<div style="margin-bottom: 5px; font-weight: 600; color: #667eea;">Example ${index + 1} - ${banner.type.toUpperCase()} (${banner.method}):</div>`;
+                html += `<span>${escapeHtml(banner.url)}</span>`;
+                html += `<button class="copy-btn" onclick="copyToClipboard('${escapeHtml(banner.url)}')">Copy</button>`;
+                html += `</div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Initialize
+        displayBanners();
+        updateExampleUrls();
+    </script>
+</body>
+</html>
+
