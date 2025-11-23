@@ -67,9 +67,9 @@ export class BannerService {
     return banner
   }
 
-  async update(id: number, token: string, options: BannerOptions) {
+  async update(id: number, token: string, options: BannerOptions, overwrite: boolean = false) {
     const banner = await Banner.query().where('id', id).where('token', token).firstOrFail()
-    banner.options = { ...banner.toJSON()?.options, ...options }
+    banner.options = overwrite ? options : { ...banner.toJSON()?.options, ...options }
     await banner.save()
     return banner
   }

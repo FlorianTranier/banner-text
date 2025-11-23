@@ -1,0 +1,857 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Banner Text API",
+    "version": "0.1.0",
+    "description": "API for generating and managing text banners as images, HTML, or plain text",
+    "contact": {
+      "name": "API Support"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Health check",
+        "description": "Returns a simple health check response",
+        "operationId": "healthCheck",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hello": {
+                      "type": "string",
+                      "example": "world"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/banners/persist": {
+      "get": {
+        "summary": "Save a banner",
+        "description": "Creates and persists a banner with the provided options. Returns the banner with metadata including URLs and token.",
+        "operationId": "saveBannerGet",
+        "tags": ["Banners"],
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Text content for the banner",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "description": "Text color (hex format)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "backgroundColor",
+            "in": "query",
+            "description": "Background color (hex format)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fontSize",
+            "in": "query",
+            "description": "Font size in pixels",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "fontFamily",
+            "in": "query",
+            "description": "Font family name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "description": "Banner width in pixels",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "description": "Banner height in pixels",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "textAlign",
+            "in": "query",
+            "description": "Horizontal text alignment",
+            "schema": {
+              "type": "string",
+              "enum": ["left", "center", "right"]
+            }
+          },
+          {
+            "name": "textVerticalAlign",
+            "in": "query",
+            "description": "Vertical text alignment",
+            "schema": {
+              "type": "string",
+              "enum": ["top", "center", "bottom"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banner created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Save a banner",
+        "description": "Creates and persists a banner with the provided options. Returns the banner with metadata including URLs and token.",
+        "operationId": "saveBannerPost",
+        "tags": ["Banners"],
+        "requestBody": {
+          "description": "Banner options",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BannerOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/banners/{type}": {
+      "get": {
+        "summary": "Generate banner",
+        "description": "Generates a banner in the specified format (image, html, or text). If an ID is provided, uses existing banner options.",
+        "operationId": "generateBannerGet",
+        "tags": ["Banners"],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "Output format type",
+            "schema": {
+              "type": "string",
+              "enum": ["image", "html", "text"]
+            }
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Text content for the banner",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "description": "Text color (hex format)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "backgroundColor",
+            "in": "query",
+            "description": "Background color (hex format)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fontSize",
+            "in": "query",
+            "description": "Font size in pixels",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "fontFamily",
+            "in": "query",
+            "description": "Font family name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "description": "Banner width in pixels",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "description": "Banner height in pixels",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "textAlign",
+            "in": "query",
+            "description": "Horizontal text alignment",
+            "schema": {
+              "type": "string",
+              "enum": ["left", "center", "right"]
+            }
+          },
+          {
+            "name": "textVerticalAlign",
+            "in": "query",
+            "description": "Vertical text alignment",
+            "schema": {
+              "type": "string",
+              "enum": ["top", "center", "bottom"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banner generated successfully",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Generate banner",
+        "description": "Generates a banner in the specified format (image, html, or text). If an ID is provided, uses existing banner options.",
+        "operationId": "generateBannerPost",
+        "tags": ["Banners"],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "Output format type",
+            "schema": {
+              "type": "string",
+              "enum": ["image", "html", "text"]
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Banner options",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BannerOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner generated successfully",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/banners/{type}/{id}": {
+      "get": {
+        "summary": "Generate banner from existing",
+        "description": "Generates a banner in the specified format using an existing banner's options, optionally merged with new options.",
+        "operationId": "generateBannerFromExisting",
+        "tags": ["Banners"],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "Output format type",
+            "schema": {
+              "type": "string",
+              "enum": ["image", "html", "text"]
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Banner ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Text content for the banner (overrides existing)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "description": "Text color (hex format, overrides existing)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "backgroundColor",
+            "in": "query",
+            "description": "Background color (hex format, overrides existing)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fontSize",
+            "in": "query",
+            "description": "Font size in pixels (overrides existing)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "fontFamily",
+            "in": "query",
+            "description": "Font family name (overrides existing)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "description": "Banner width in pixels (overrides existing)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "description": "Banner height in pixels (overrides existing)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "textAlign",
+            "in": "query",
+            "description": "Horizontal text alignment (overrides existing)",
+            "schema": {
+              "type": "string",
+              "enum": ["left", "center", "right"]
+            }
+          },
+          {
+            "name": "textVerticalAlign",
+            "in": "query",
+            "description": "Vertical text alignment (overrides existing)",
+            "schema": {
+              "type": "string",
+              "enum": ["top", "center", "bottom"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banner generated successfully",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/banners/{id}": {
+      "patch": {
+        "summary": "Update banner",
+        "description": "Updates an existing banner. Requires the banner token for authentication.",
+        "operationId": "updateBanner",
+        "tags": ["Banners"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Banner ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Banner update options",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BannerUpdateOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update banner",
+        "description": "Updates an existing banner. Requires the banner token for authentication.",
+        "operationId": "updateBannerPut",
+        "tags": ["Banners"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Banner ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Banner update options",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BannerUpdateOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/docs": {
+      "get": {
+        "summary": "API documentation",
+        "description": "Returns the API documentation HTML page",
+        "operationId": "getApiDocs",
+        "tags": ["Documentation"],
+        "responses": {
+          "200": {
+            "description": "API documentation HTML page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "OpenAPI specification",
+        "description": "Returns the OpenAPI specification in JSON format",
+        "operationId": "getOpenAPISpec",
+        "tags": ["Documentation"],
+        "responses": {
+          "200": {
+            "description": "OpenAPI specification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BannerOptions": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text content for the banner"
+          },
+          "color": {
+            "type": "string",
+            "description": "Text color in hex format",
+            "example": "#FF5733"
+          },
+          "backgroundColor": {
+            "type": "string",
+            "description": "Background color in hex format",
+            "example": "#FFFFFF"
+          },
+          "fontSize": {
+            "type": "number",
+            "description": "Font size in pixels",
+            "example": 48
+          },
+          "fontFamily": {
+            "type": "string",
+            "description": "Font family name",
+            "example": "Arial"
+          },
+          "width": {
+            "type": "number",
+            "description": "Banner width in pixels",
+            "example": 800
+          },
+          "height": {
+            "type": "number",
+            "description": "Banner height in pixels",
+            "example": 200
+          },
+          "textAlign": {
+            "type": "string",
+            "enum": ["left", "center", "right"],
+            "description": "Horizontal text alignment",
+            "example": "center"
+          },
+          "textVerticalAlign": {
+            "type": "string",
+            "enum": ["top", "center", "bottom"],
+            "description": "Vertical text alignment",
+            "example": "center"
+          }
+        }
+      },
+      "BannerUpdateOptions": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Banner authentication token"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text content for the banner"
+          },
+          "color": {
+            "type": "string",
+            "description": "Text color in hex format",
+            "example": "#FF5733"
+          },
+          "backgroundColor": {
+            "type": "string",
+            "description": "Background color in hex format",
+            "example": "#FFFFFF"
+          },
+          "fontSize": {
+            "type": "number",
+            "description": "Font size in pixels",
+            "example": 48
+          },
+          "fontFamily": {
+            "type": "string",
+            "description": "Font family name",
+            "example": "Arial"
+          },
+          "width": {
+            "type": "number",
+            "description": "Banner width in pixels",
+            "example": 800
+          },
+          "height": {
+            "type": "number",
+            "description": "Banner height in pixels",
+            "example": 200
+          },
+          "textAlign": {
+            "type": "string",
+            "enum": ["left", "center", "right"],
+            "description": "Horizontal text alignment",
+            "example": "center"
+          },
+          "textVerticalAlign": {
+            "type": "string",
+            "enum": ["top", "center", "bottom"],
+            "description": "Vertical text alignment",
+            "example": "center"
+          }
+        }
+      },
+      "BannerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique banner identifier"
+          },
+          "options": {
+            "type": "object",
+            "description": "Banner configuration options"
+          },
+          "token": {
+            "type": "string",
+            "description": "Authentication token for updating the banner"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to generate banner as image"
+          },
+          "htmlUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to generate banner as HTML"
+          },
+          "textUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to generate banner as text"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Banner creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Banner last update timestamp"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "Banners",
+      "description": "Banner generation and management endpoints"
+    },
+    {
+      "name": "Documentation",
+      "description": "API documentation endpoints"
+    }
+  ]
+}

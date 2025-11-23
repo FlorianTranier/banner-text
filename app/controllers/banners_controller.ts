@@ -80,7 +80,12 @@ export default class BannersController {
   async update({ params, request, response }: HttpContext) {
     const payload = await request.validateUsing(updateBannerValidator)
     const { token, ...restPayload } = payload
-    const banner = await this.bannerService.update(params.id, token, restPayload)
+    const banner = await this.bannerService.update(
+      params.id,
+      token,
+      restPayload,
+      request.method() === 'PUT'
+    )
 
     const metadata = {
       imageUrl: `${env.get('URL')}/banners/image/${banner.id}`,

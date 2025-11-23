@@ -29,9 +29,26 @@ router.get('/test', async ({ response }) => {
   return response.send(html)
 })
 
+router.get('/docs', async ({ response }) => {
+  const appRoot = fileURLToPath(app.appRoot)
+  const testHtmlPath = join(appRoot, 'public', 'api-docs.html')
+  const html = await readFile(testHtmlPath, 'utf-8')
+  response.header('Content-Type', 'text/html')
+  return response.send(html)
+})
+
+router.get('/api/docs', async ({ response }) => {
+  const appRoot = fileURLToPath(app.appRoot)
+  const openApiPath = join(appRoot, 'openapi.json')
+  const openApiSpec = await readFile(openApiPath, 'utf-8')
+  response.header('Content-Type', 'application/json')
+  return response.send(openApiSpec)
+})
+
 router.get('/banners/persist', [BannersController, 'save'])
 router.post('/banners/persist', [BannersController, 'save'])
 router.get('/banners/:type', [BannersController, 'create'])
 router.post('/banners/:type', [BannersController, 'create'])
 router.get('/banners/:type/:id', [BannersController, 'create'])
 router.patch('/banners/:id', [BannersController, 'update'])
+router.put('/banners/:id', [BannersController, 'update'])
