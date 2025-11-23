@@ -1,6 +1,5 @@
 import Banner from '#models/banner'
 import { createCanvas } from 'canvas'
-import { inject } from '@adonisjs/core'
 
 interface BannerOptions {
   id?: number
