@@ -25,7 +25,5 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh
 EXPOSE 8080
-CMD ["./docker-entrypoint.sh"]
+CMD ["node", "./bin/server.js"]
