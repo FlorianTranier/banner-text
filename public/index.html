@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Generate customizable text banners as PNG images, HTML, or plain text via REST API. Free banner generator API with persistent storage, custom fonts, colors, and sizes."
+    />
+    <meta
+      name="keywords"
+      content="banner API, text banner generator, banner image API, REST API, PNG banner, HTML banner, text banner, banner generator, API service, image generation API"
+    />
+    <meta name="author" content="Banner Text API" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1f2937" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Banner Text API - Generate Custom Text Banners" />
+    <meta
+      property="og:description"
+      content="Generate customizable text banners in multiple formats. PNG images, HTML, or plain text—all from a simple REST API."
+    />
+    <meta property="og:site_name" content="Banner Text API" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Banner Text API - Generate Custom Text Banners" />
+    <meta
+      name="twitter:description"
+      content="Generate customizable text banners in multiple formats. PNG images, HTML, or plain text—all from a simple REST API."
+    />
+
+    <title>Banner Text API - Generate Custom Text Banners | Free REST API</title>
+    <link rel="canonical" href="/" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebAPI",
+        "name": "Banner Text API",
+        "description": "A RESTful API service for generating customizable text banners in multiple formats (PNG images, HTML, and plain text). Create, persist, and update text banners with extensive customization options.",
+        "url": "/",
+        "documentation": "/docs",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "provider": {
+          "@type": "Organization",
+          "name": "Banner Text API"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5",
+          "ratingCount": "1"
+        },
+        "featureList": [
+          "Generate PNG image banners",
+          "Generate HTML banners",
+          "Generate plain text banners",
+          "Persistent banner storage",
+          "Customizable fonts, colors, and sizes",
+          "RESTful API endpoints",
+          "Token-based authentication for updates"
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        --pico-font-size: 100%;
+      }
+      .hero {
+        text-align: center;
+        padding: 4rem 1rem;
+        background: var(--pico-background-color);
+        border-bottom: 1px solid var(--pico-border-color);
+      }
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--pico-color);
+      }
+      .hero p {
+        font-size: 1.25rem;
+        color: var(--pico-muted-color);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+      }
+      .feature-card {
+        padding: 1.5rem;
+        border: 1px solid var(--pico-border-color);
+        border-radius: var(--pico-border-radius);
+      }
+      .feature-card h3 {
+        margin-top: 0;
+        color: var(--pico-primary);
+      }
+      .examples {
+        margin: 4rem 0;
+      }
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      .example-card {
+        padding: 1.5rem;
+        background: var(--pico-card-background-color);
+        border-radius: var(--pico-border-radius);
+      }
+      .example-card code {
+        display: block;
+        padding: 1rem;
+        background: var(--pico-code-background-color);
+        border-radius: var(--pico-border-radius);
+        margin: 1rem 0;
+        overflow-x: auto;
+      }
+      .example-card pre {
+        margin: 1rem 0;
+      }
+      .example-card pre code {
+        display: block;
+        padding: 1rem;
+        background: var(--pico-code-background-color);
+        border-radius: var(--pico-border-radius);
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .banner-preview {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed var(--pico-border-color);
+        border-radius: var(--pico-border-radius);
+        margin: 1rem 0;
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      .cta-section {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: var(--pico-secondary-background);
+        border-radius: var(--pico-border-radius);
+        margin: 3rem 0;
+      }
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .hero p {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="container">
+        <ul>
+          <li><strong>Banner Text API</strong></li>
+        </ul>
+        <ul>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="/docs">Documentation</a></li>
+          <li><a href="/api/docs">API Spec</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="container">
+      <section class="hero">
+        <h1>Banner Text API: Generate Custom Text Banners</h1>
+        <p>
+          Generate customizable text banners in multiple formats. Create PNG images, HTML, or plain
+          text banners—all from a simple REST API. Free banner generator with no authentication
+          required.
+        </p>
+        <a href="/docs" role="button" class="secondary" aria-label="View API documentation"
+          >View API Docs</a
+        >
+        <a href="#examples" role="button" aria-label="View banner examples">Try Examples</a>
+      </section>
+
+      <section aria-labelledby="features-heading">
+        <h2 id="features-heading">Banner Text API Features</h2>
+        <div class="features">
+          <article class="feature-card">
+            <h3>Multiple Output Formats</h3>
+            <p>
+              Generate banners as PNG images, HTML, or plain text. Choose the format that fits your
+              needs. Perfect for web applications, social media, or documentation.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Persistent Banner Storage</h3>
+            <p>
+              Save banners to the database with unique IDs and tokens. Update them anytime with
+              token-based authentication. Never lose your banner configurations.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Highly Customizable Banners</h3>
+            <p>
+              Control text content, colors, fonts, sizes, alignment, and dimensions. Full control
+              over every aspect of your banner design. Create professional banners programmatically.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>RESTful API Design</h3>
+            <p>
+              Clean and intuitive API endpoints following REST principles. Easy to integrate into
+              any application or workflow. Supports GET, POST, and PATCH methods.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="examples" class="examples" aria-labelledby="examples-heading">
+        <h2 id="examples-heading">Banner Text API Examples</h2>
+        <p>
+          Learn how to use the Banner Text API with these practical examples. Copy and paste the
+          code snippets to generate your own custom banners.
+        </p>
+
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>Simple Text Banner Example</h3>
+            <div
+              class="banner-preview"
+              style="background: white; color: black"
+              role="img"
+              aria-label="Example banner showing Hello World text"
+            >
+              Hello World
+            </div>
+            <code>GET /banners/image?text=Hello%20World</code>
+            <p>
+              Generate a basic banner image with default styling. Perfect for quick banner creation
+              without customization.
+            </p>
+          </article>
+
+          <article class="example-card">
+            <h3>Custom Color Banner Example</h3>
+            <div
+              class="banner-preview"
+              style="background: #ff5733; color: white"
+              role="img"
+              aria-label="Example banner with custom orange background and white text"
+            >
+              Welcome
+            </div>
+            <code>GET /banners/image?text=Welcome&color=white&backgroundColor=%23FF5733</code>
+            <p>
+              Customize text and background colors using hex codes. Create branded banners that
+              match your color scheme.
+            </p>
+          </article>
+
+          <article class="example-card">
+            <h3>Large Font Banner Example</h3>
+            <div
+              class="banner-preview"
+              style="background: #f0f0f0; color: #333; font-size: 2rem"
+              role="img"
+              aria-label="Example banner with large font size"
+            >
+              Big Text
+            </div>
+            <code>GET /banners/image?text=Big%20Text&fontSize=72&width=1200&height=300</code>
+            <p>
+              Adjust font size and banner dimensions to your needs. Create eye-catching headers and
+              social media graphics.
+            </p>
+          </article>
+        </div>
+
+        <h3>Save Banner to Database</h3>
+        <article>
+          <p>
+            Save a banner to the database and get URLs for all formats. Use this endpoint to persist
+            your banner configurations:
+          </p>
+          <pre><code>POST /banners/persist
+Content-Type: application/json
+
+{
+  "text": "My Banner",
+  "color": "#333333",
+  "backgroundColor": "#F0F0F0",
+  "fontSize": 48,
+  "width": 1200,
+  "height": 300
+}</code></pre>
+          <p>
+            <strong>Response:</strong> Returns banner ID, token, and URLs for image, HTML, and text
+            formats. Save the token to update your banner later.
+          </p>
+        </article>
+
+        <h3>Update Existing Banner</h3>
+        <article>
+          <p>
+            Update an existing banner using its token. Modify text, colors, fonts, or dimensions:
+          </p>
+          <pre><code>PATCH /banners/{id}
+Content-Type: application/json
+
+{
+  "token": "your-token-here",
+  "text": "Updated Text",
+  "color": "#000000"
+}</code></pre>
+          <p>
+            Use the token received when creating the banner to authenticate your update request.
+          </p>
+        </article>
+      </section>
+
+      <section class="cta-section" aria-labelledby="get-started-heading">
+        <h2 id="get-started-heading">Get Started with Banner Text API</h2>
+        <p>
+          Start generating banners in seconds. No authentication required for basic usage. Free
+          banner generator API for developers.
+        </p>
+        <a href="/docs" role="button" aria-label="View complete API documentation"
+          >View Full Documentation</a
+        >
+        <a href="/api/docs" role="button" class="secondary" aria-label="View OpenAPI specification"
+          >OpenAPI Spec</a
+        >
+      </section>
+
+      <section aria-labelledby="quick-reference-heading">
+        <h2 id="quick-reference-heading">API Endpoints Quick Reference</h2>
+        <p>Complete list of Banner Text API endpoints for generating and managing text banners.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Endpoint</th>
+              <th>Method</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/banners/image</code></td>
+              <td>GET/POST</td>
+              <td>Generate PNG image banner</td>
+            </tr>
+            <tr>
+              <td><code>/banners/html</code></td>
+              <td>GET/POST</td>
+              <td>Generate HTML banner</td>
+            </tr>
+            <tr>
+              <td><code>/banners/text</code></td>
+              <td>GET/POST</td>
+              <td>Generate plain text banner</td>
+            </tr>
+            <tr>
+              <td><code>/banners/persist</code></td>
+              <td>GET/POST</td>
+              <td>Create and save banner to database</td>
+            </tr>
+            <tr>
+              <td><code>/banners/{id}</code></td>
+              <td>PATCH</td>
+              <td>Update existing banner</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+        <article>
+          <h3>What formats does the Banner Text API support?</h3>
+          <p>
+            The API supports three output formats: PNG images, HTML, and plain text. You can
+            generate banners in any format that fits your use case.
+          </p>
+        </article>
+        <article>
+          <h3>Do I need authentication to use the API?</h3>
+          <p>
+            No authentication is required for basic banner generation. However, to persist and
+            update banners, you'll receive a token that acts as authentication for updates.
+          </p>
+        </article>
+        <article>
+          <h3>What customization options are available?</h3>
+          <p>
+            You can customize text content, text color, background color, font size, font family,
+            banner width and height, horizontal alignment, and vertical alignment.
+          </p>
+        </article>
+        <article>
+          <h3>Is the Banner Text API free to use?</h3>
+          <p>
+            Yes, the Banner Text API is free to use. Generate as many banners as you need without
+            any cost or usage limits.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer
+      style="
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 4rem;
+        border-top: 1px solid var(--pico-border-color);
+      "
+    >
+      <p>
+        <small>Banner Text API - Free Text Banner Generator</small>
+      </p>
+    </footer>
+  </body>
+</html>

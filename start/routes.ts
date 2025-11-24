@@ -15,10 +15,12 @@ import { join } from 'node:path'
 
 const BannersController = () => import('#controllers/banners_controller')
 
-router.get('/', async () => {
-  return {
-    hello: 'world',
-  }
+router.get('/', async ({ response }) => {
+  const appRoot = fileURLToPath(app.appRoot)
+  const indexHtmlPath = join(appRoot, 'public', 'index.html')
+  const html = await readFile(indexHtmlPath, 'utf-8')
+  response.header('Content-Type', 'text/html')
+  return response.send(html)
 })
 
 router.get('/test', async ({ response }) => {
