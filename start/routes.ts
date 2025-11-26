@@ -14,6 +14,10 @@ import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 
 const BannersController = () => import('#controllers/banners_controller')
+const HealthChecksController = () => import('#controllers/health_checks_controller')
+
+router.get('/health', [HealthChecksController])
+router.get('/health/json', [HealthChecksController])
 
 router.get('/', async ({ response }) => {
   const appRoot = fileURLToPath(app.appRoot)

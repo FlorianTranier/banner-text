@@ -58,6 +58,7 @@
     "@vinejs/vine": "^3.0.1",
     "better-sqlite3": "^12.4.5",
     "canvas": "^3.2.0",
+    "edge.js": "^6.3.0",
     "luxon": "^3.7.2",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2"
